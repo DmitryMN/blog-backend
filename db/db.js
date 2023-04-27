@@ -6,5 +6,5 @@ export const sequelize  = new Sequelize({
     port: 5432,
     username: 'postgres',
     password: 'root',
-    database: 'blog-app'
+    database: 'blog-app',
 });
