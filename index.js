@@ -2,6 +2,7 @@ import express from 'express';
 import { sequelize } from './db/db.js';
 import { registrValidation } from './validation/auth.js';
 import { authController } from './auth/auth.controller.js';
+import checkAuth from './utils/checkAuth.js';
 
 
 const PORT = 4444
@@ -23,6 +24,8 @@ app.get('/', (req, res) => {
 app.post('/auth/registration', registrValidation, authController.registration);
 
 app.post('/auth/login', authController.login);
+
+app.get('/auth/me', checkAuth, authController.me);
 
 app.listen(PORT, (err) => {
     if (err) {
