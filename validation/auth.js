@@ -1,5 +1,11 @@
 import { body } from "express-validator";
 
+
+export const loginValidation = [
+    body('email', 'неверный формат почты').isEmail(),
+    body('password', 'Пароль должен быть минимум 8 символов').isLength({min: 8}),
+]
+
 export const registrValidation = [
     body('email', 'неверный формат почты').isEmail(),
     body('password', 'Пароль должен быть минимум 8 символов').isLength({min: 8}),

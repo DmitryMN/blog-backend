@@ -79,11 +79,10 @@ export const authController = {
 
     async me(req, res) {
         try {
-
-            const user = await userService.getUserByEmail(req.email)
+            
+            const user = await userService.getUserById(req.id);
 
             const {id, fullName, email, avatrUrl} = user.dataValues;
-
 
             if(!user) {
                 return res.status(403).json({
