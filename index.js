@@ -21,14 +21,12 @@ app.get('/', (req, res) => {
 });
 
 app.post('/auth/registration', registrValidation, authController.registration);
-
 app.post('/auth/login', authController.login);
-
 app.get('/auth/me', checkAuth, authController.me);
 
 app.post('/posts', checkAuth, postCreateValidation, postsController.createPost);
-
 app.get('/posts', postsController.getAllpost);
+app.get('/posts/:id', postsController.getOnePost);
 
 app.listen(PORT, (err) => {
     if (err) {

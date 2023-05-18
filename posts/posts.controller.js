@@ -1,4 +1,5 @@
 import { postService } from "./post.service.js";
+import { validationResult } from 'express-validator';
 
 export const postsController = {
     async createPost(req, res) {
@@ -9,8 +10,6 @@ export const postsController = {
             if (!resultError.isEmpty()) {
                 return res.status(400).json(resultError.array());
             }
-
-            console.log('id: ' + req.id);
             
             const post = {
                 title: req.body.title,
@@ -50,6 +49,29 @@ export const postsController = {
         } catch(e) {
             res.status(500).json({
                 message: 'Не удалось загрузить статьи'
+            })
+        }
+    },
+
+    async getOnePost(req, res) {
+        try {
+            const id = req.params.id;
+
+            const post = await postService.getOnePost(id);
+
+            if(!post) {
+                return res.status(404).json({
+                    message: 'Пост не существует'
+                });
+            }
+
+            res.status(200).json({
+                post
+            });
+
+        } catch(e) {
+            res.status(500).json({
+                message: 'Не удалось загрузить статью'
             })
         }
     }

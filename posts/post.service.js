@@ -1,13 +1,21 @@
+import { users } from "../users/users.model.js";
 import { posts} from "./posts.model.js"
 
 export const postService = {
     async createPost (postData) {
-        const post = posts.create(postData);
+        console.log('post: ' + postData)      
+        const post = await posts.create(postData);
+        console.log('post: ' + post)        
         return post;
     },
-
     async getAllPost() {
-        const allPost = posts.findAll({ raw: true });
+        const allPost = await posts.findAll({include: users});
         return allPost;
+    },
+    async getOnePost(id) {
+        const post = await posts.findByPk(id);
+        await post.increment('viewsCount');
+        await post.reload();
+        return post;
     }
 }
