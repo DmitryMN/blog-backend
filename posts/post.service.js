@@ -2,10 +2,8 @@ import { users } from "../users/users.model.js";
 import { posts} from "./posts.model.js"
 
 export const postService = {
-    async createPost (postData) {
-        console.log('post: ' + postData)      
-        const post = await posts.create(postData);
-        console.log('post: ' + post)        
+    async createPost (postData) { 
+        const post = await posts.create(postData);  
         return post;
     },
     async getAllPost() {
@@ -17,5 +15,13 @@ export const postService = {
         await post.increment('viewsCount');
         await post.reload();
         return post;
+    },
+    async removePost(_id) {
+        const result = await posts.destroy({
+            where: {
+                id: _id
+            }
+        });
+        return result
     }
 }

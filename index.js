@@ -27,6 +27,7 @@ app.get('/auth/me', checkAuth, authController.me);
 app.post('/posts', checkAuth, postCreateValidation, postsController.createPost);
 app.get('/posts', postsController.getAllpost);
 app.get('/posts/:id', postsController.getOnePost);
+app.delete('/posts/:id', checkAuth, postsController.removePost);
 
 app.listen(PORT, (err) => {
     if (err) {

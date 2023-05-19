@@ -4,13 +4,12 @@ import { validationResult } from 'express-validator';
 export const postsController = {
     async createPost(req, res) {
         try {
-
             const resultError = validationResult(req);
 
             if (!resultError.isEmpty()) {
                 return res.status(400).json(resultError.array());
             }
-            
+
             const post = {
                 title: req.body.title,
                 text: req.body.text,
@@ -26,7 +25,7 @@ export const postsController = {
                 newPost
             })
 
-        } catch(e) {
+        } catch (e) {
             res.status(500).json({
                 message: 'Не удалось создать статью'
             })
@@ -38,7 +37,7 @@ export const postsController = {
 
             const getPosts = await postService.getAllPost();
 
-            if(!getPosts) {
+            if (!getPosts) {
                 return res.status(400).json({
                     message: 'Посты не найдены'
                 });
@@ -46,7 +45,7 @@ export const postsController = {
 
             res.status(200).json(getPosts);
 
-        } catch(e) {
+        } catch (e) {
             res.status(500).json({
                 message: 'Не удалось загрузить статьи'
             })
@@ -57,9 +56,15 @@ export const postsController = {
         try {
             const id = req.params.id;
 
+            if (!id) {
+                return res.status(404).json({
+                    message: 'Неизвестный id'
+                });
+            }
+
             const post = await postService.getOnePost(id);
 
-            if(!post) {
+            if (!post) {
                 return res.status(404).json({
                     message: 'Пост не существует'
                 });
@@ -69,9 +74,32 @@ export const postsController = {
                 post
             });
 
-        } catch(e) {
+        } catch (e) {
             res.status(500).json({
                 message: 'Не удалось загрузить статью'
+            })
+        }
+    },
+
+    async removePost(req, res) {
+        try {
+            const id = req.params.id;
+
+            if (!id) {
+                return res.status(404).json({
+                    message: 'Неизвестный id'
+                });
+            }
+
+            const result = await postService.removePost(id);
+            console.log('result: ' + result);
+            res.status(200).json({
+                succes: true
+            });
+
+        } catch (e) {
+            res.status(500).json({
+                message: 'Не удалось удалить пост'
             })
         }
     }
